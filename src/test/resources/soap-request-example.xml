@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope
+        xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Body>
+        <MovilizerOnlineCallbackRequest systemId="1234" xmlns="http://movilitas.com/movilizer/v12">
+            <onlineContainer>
+                <container moveletKey="helloKey" participantKey="12345" deviceAddress="@your.not.gonna@believe.it" syncTimestamp="">
+                    <data>
+                        <entry name="username">
+                            <valstr>Nemo</valstr>
+                        </entry>
+                    </data>
+                </container>
+            </onlineContainer>
+        </MovilizerOnlineCallbackRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
