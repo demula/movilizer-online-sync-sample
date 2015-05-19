@@ -16,9 +16,7 @@
 
 package com.movilizer.mds.onlinesync.sample;
 
-import com.movilizer.mds.onlinesync.sample.enpoints.HelloMoveletEndpoint;
 import com.movilizer.mds.onlinesync.sample.webservices.HelloMoveletWebservice;
-import com.movilizer.mds.webservice.Movilizer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.Bus;
@@ -28,20 +26,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.ws.config.annotation.EnableWs;
-import org.springframework.ws.transport.http.MessageDispatcherServlet;
-import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
-import org.springframework.xml.xsd.SimpleXsdSchema;
-import org.springframework.xml.xsd.XsdSchema;
 
 import javax.xml.ws.Endpoint;
 
 @SpringBootApplication
-@EnableWs
 @ImportResource({"classpath:META-INF/cxf/cxf.xml"})
 public class OnlineSyncApplication {
     private static Log logger = LogFactory.getLog(OnlineSyncApplication.class);
@@ -67,30 +57,6 @@ public class OnlineSyncApplication {
         Endpoint endpoint = new EndpointImpl(bus, helloMoveletWebservice);
         endpoint.publish("/helloMoveletWebservice");
         return endpoint;
-    }
-
-    //For Spring WS implementation
-    @Bean
-    public ServletRegistrationBean messageDispatcherServlet(ApplicationContext applicationContext) {
-        MessageDispatcherServlet servlet = new MessageDispatcherServlet();
-        servlet.setApplicationContext(applicationContext);
-        servlet.setTransformWsdlLocations(true);
-        return new ServletRegistrationBean(servlet, "/ws/*");
-    }
-
-    @Bean(name = "helloMoveletWebservice")
-    public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema movilizerSchema) {
-        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-        wsdl11Definition.setPortTypeName("HelloMoveletPort");
-        wsdl11Definition.setLocationUri("/ws");
-        wsdl11Definition.setTargetNamespace(HelloMoveletEndpoint.NAMESPACE_URI);
-        wsdl11Definition.setSchema(movilizerSchema);
-        return wsdl11Definition;
-    }
-
-    @Bean
-    public XsdSchema movilizerSchema() {
-        return new SimpleXsdSchema(new ClassPathResource(Movilizer.SCHEMA));
     }
 
 }
